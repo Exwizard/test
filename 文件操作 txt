@@ -1,0 +1,35 @@
+#写入数据 读取数据 写入数据
+
+import random
+a=[]
+
+for i in range(50):
+    a.append(int(random.random()*50+0.5))
+a.sort()
+with  open('D:\\555.txt','r+') as f:
+    f.truncate()
+    for i in range(50):
+        f.write(str(a[i]))
+        f.write(',')
+    
+with  open('D:\\555.txt','r') as f:
+    s= f.read()#前面如果有f.read的命令话，就会因为指针指到最后而无法读取
+    print(s)
+    b=s.split(',')
+    del b[50]
+
+for i in range(50):
+    b[i]=int(b[i])
+
+b.reverse()
+with  open('D:\\555.txt','r+') as f:
+    f.read()
+    f.write('\n')
+    for i in range(50):
+        f.write(str(b[i]))
+        f.write(',')
+
+with  open('D:\\555.txt','r+') as f:   #验证
+    print(f.read())
+
+
