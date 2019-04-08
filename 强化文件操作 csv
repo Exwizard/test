@@ -1,0 +1,6 @@
+import pandas as pd
+df = pd.read_csv('aapl.csv')
+s=0
+for i in range(len(df['Volume'])):
+    s=s+df['Volume'][i]
+print(s/len(df['Volume']))
