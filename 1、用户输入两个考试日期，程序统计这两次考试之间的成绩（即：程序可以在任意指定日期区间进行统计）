@@ -1,0 +1,46 @@
+import numpy as np
+tmp=np.loadtxt(open(r"C:\Users\yu\Desktop\统计作业\三5.csv", encoding='utf8'), dtype=np.str, delimiter=',')
+a=float(input("输入开始时间：xx.xx"))
+b=float(input("输入结束时间：xx.xx"))
+def se(x):
+    if x<=7:
+        x=x+12
+    if x<=9.08:
+        return 5
+    elif x<=9.15:
+        return 6
+    elif x<=9.29:
+        return 7
+    elif x<=10.01:
+        return 8
+    elif x<=10.27:
+        return 9
+    elif x<=11.14:
+        return 10
+    elif x<=12.15:
+        return 11
+    elif x<=12.31:
+        return 12
+    elif x<=13.05:
+        return 13
+    elif x<=13.10:
+        return 14
+    elif x<=15.13:
+        return 16
+    elif x<=15.23:
+        return 17
+    elif x<=16.01:
+        return 18
+    elif x<=16.13:
+        return 19
+    else:
+        return 20
+    
+c=se(a)
+d=se(b)+1
+for j in range(1,43):
+    print(tmp[j][0],tmp[j][3])
+    for i in range(c,d):
+        print(tmp[j][i],end=' ')
+    print()
+        
