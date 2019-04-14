@@ -1,0 +1,17 @@
+import numpy as np
+import matplotlib.pyplot as plt
+tmp=np.loadtxt(open(r"C:\Users\yu\Desktop\统计作业\三5.csv", encoding='utf8'), dtype=np.str, delimiter=',')
+a=[]
+for i in range(5,21):
+    a.append(tmp[0][i])
+
+for j in range(1,43):
+    b=[]
+    for i in range(5,21):
+        b.append(float(tmp[j][i]))
+    plt.ylim(0,100)
+    plt.plot(a,b)
+    plt.scatter(a,b)
+    plt.title(tmp[j][0])
+    plt.savefig(r'C:\Users\yu\Desktop\统计作业\tupian\ '+tmp[j][3]+'.png')#\后面不加空格的话会把'也看作文件名
+    plt.close()
