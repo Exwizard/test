@@ -1,0 +1,32 @@
+
+# -*- coding: utf-8 -*-
+import numpy as np
+from scipy.optimize import leastsq
+import pylab as pl
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+pi=np.pi
+tmp=np.loadtxt(open(r"C:\Users\yu\Desktop\3.csv", encoding='utf8'), dtype=np.float, delimiter=',')
+
+x1=tmp[0]
+y1=tmp[1]
+y2=tmp[2]
+
+def func(x, a, b, c,d):
+    return a * np.sin(b * x+c) + d
+ 
+xdata = np.linspace(0, 12, 1500)
+p0=[80,0.523,0,15]
+plt.plot(x1,y1,'b-')
+plt.plot(x1,y2,'y-')
+popt, pcov = curve_fit(func, x1, y1,p0)
+popt1, pcov1 = curve_fit(func, x1, y2,p0)
+print(popt,popt1)
+#popt数组中，三个值分别是待求参数a,b,c
+y3 = [func(i, popt[0],popt[1],popt[2],popt[3]) for i in xdata]
+y4 = [func(i, popt1[0],popt1[1],popt1[2],popt1[3]) for i in xdata]
+plt.plot(xdata,y3,'r--')
+plt.plot(xdata,y4,'p--')
+print ('最小值偏移（单位是x轴）：',(y3.index(min(y3))-y4.index(min(y4)))*12/1500)  #偏移量
+print ('最大值偏移：',(y3.index(max(y3))-y4.index(max(y4)))*12/1500)  #偏移量
+plt.show()
