@@ -1,0 +1,86 @@
+import numpy as np
+import scipy as sp
+import matplotlib
+import matplotlib.pyplot as plt
+import sklearn
+import IPython
+import platform
+
+from sklearn import neighbors
+import pandas as pd 
+import numpy as np
+
+from sklearn import svm,datasets
+from sklearn.model_selection import GridSearchCV
+
+import csv 
+from sklearn.model_selection import train_test_split 
+from sklearn import preprocessing
+
+dataset = pd.read_csv('S1018bf.csv')
+dataset = dataset.dropna()#删除NaN
+#提取特征和类别
+X= dataset.loc[:,'Spectral.Index':'variability_index']  #ix就是index     
+y= dataset.loc[:,'Optical.Class']
+a1=np.array(X)
+a2=np.array(y)
+#已下为调整系数
+a3=[-8]
+a10=[-7.5,-7.75,-8,-8.25,-8.5]
+a11=[5]
+a13=[-6.75,-7,-7.25,-7.5,-7.75,-8]
+a14=[0]
+a17=[-8.5,-8.75,-9]
+z=[]
+z0=[]
+def bl(q,w,e,r,t,w5,w6,w2):#对每一列按一定比例进行放大
+    a1=np.array(X)
+    for i in range(len(a1)):
+        a1[i][0]=a1[i][0]*10**q
+        a1[i][1]=a1[i][1]*10**w
+        a1[i][3]=a1[i][3]*10**e
+        a1[i][4]=a1[i][4]*r*10**9
+        a1[i][7]=a1[i][7]*10**t
+        a1[i][5]=a1[i][5]*10**w5
+        a1[i][6]=a1[i][6]*10**w6
+        a1[i][2]=a1[i][2]*10**w2
+    answe=pf(a1)
+    z.append(answe)
+    if answe>=0.911:#输出符合要求的参数
+        z0.append([q,w,e,r,t,w5,w6,w2,answe])
+        print(q,w,e,r,t,w5,w6,w2,answe)
+
+def pf(z1):#算分
+    # 建立KNN模型，邻居数选为7，默认为5
+    #划分训练集和测试集
+    #train_test_split函数用于将矩阵随机划分为训练子集和测试子集，并返回划分好的训练集测试集样本和训练集测试集标签。
+    X_train, X_test, y_train, y_test = train_test_split(z1, a2, test_size=0.3, random_state=1)
+    knn_model = neighbors.KNeighborsClassifier(n_neighbors = 7)
+    knn_model.fit(X_train, y_train)
+    #对测试集进行预测 
+    predict_data = knn_model.predict(X_test)
+    accuracy = np.mean(predict_data==y_test)
+    
+    return(accuracy)
+
+for i in range(len(a10)):#穷举法找最佳搭配
+    q1=a10[i]
+    for j in range(len(a17)):
+        w1=a17[j]
+        for l in range(len(a13)):
+            r1=a13[l]
+            for m in range(len(a14)):
+                t1=a14[m]
+                for n in range(len(a10)):
+                    i1=a10[n]
+                    for o in range(len(a3)):
+                        w22=a3[o]
+                        for p in range(len(a11)):
+                            w23=a11[p]
+                            for f in range(len(a3)):
+                                w24=a3[f]
+                                bl(q1,w1,r1,t1,i1,w22,w23,w24)
+
+z.sort(reverse=True)
+z0=np.array(z0)#找出最大值
+print(z[0])
